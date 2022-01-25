@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+  
+  <Commands package="guidKLCodeExtensionsPackage">
+
+    <Menus>
+      <Menu guid="guidKLCodeExtensionsPackageCmdSet" id="KLCodeExtensionsMenu" priority="0x700" type="Menu">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_TOOLSADDINS" />
+        <Strings>
+          <ButtonText>KL Code Extensions</ButtonText>
+        </Strings>
+      </Menu>
+    </Menus>
+
+    <Groups>
+      <Group guid="guidKLCodeExtensionsPackageCmdSet" id="KLCodeExtensionsMenuGroup" priority="0x0600">
+        <Parent guid="guidKLCodeExtensionsPackageCmdSet" id="KLCodeExtensionsMenu" />
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="guidKLCodeExtensionsPackageCmdSet" id="CodeLayoutCommandId" priority="0x00100" type="Button">
+        <Parent guid="guidKLCodeExtensionsPackageCmdSet" id="KLCodeExtensionsMenuGroup"/>
+        <Icon guid="guidImages" id="bmpPic2" />
+        <Strings>
+          <CommandName>CodeLayout</CommandName>
+          <ButtonText>Code Layout</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+    
+    <Bitmaps>
+      <Bitmap guid="guidImages" href="Resources\KLCodeExtensionCommand.png" usedList="bmpPic1, bmpPic2, bmpPic3"/>
+    </Bitmaps>
+  </Commands>
+
+  <Symbols>
+    <!-- This is the package guid. -->
+    <GuidSymbol name="guidKLCodeExtensionsPackage" value="{f1226fcb-2210-4431-94c6-e4f826a7ffee}" />
+
+    <!-- This is the guid used to group the menu commands together -->
+    <GuidSymbol name="guidKLCodeExtensionsPackageCmdSet" value="{90df073e-728f-45f2-9029-8ae359da79f8}">
+      <IDSymbol name="KLCodeExtensionsMenuGroup" value="0x1020" />
+      <IDSymbol name="KLCodeExtensionsMenu" value="0x1021" />
+      <IDSymbol name="CodeLayoutCommandId" value="0x0100" />
+    </GuidSymbol>
+
+    <GuidSymbol name="guidImages" value="{6801951d-df2e-4d54-aa09-7d190c9097ee}" >
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPic3" value="3" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>
