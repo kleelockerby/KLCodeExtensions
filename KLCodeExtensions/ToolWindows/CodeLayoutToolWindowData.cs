@@ -10,5 +10,5 @@ namespace KLCodeExtensions
     public class CodeLayoutToolWindowData
     {
         public EnvDTE.DTE Dte { get; set; }
-}
+    }
 }

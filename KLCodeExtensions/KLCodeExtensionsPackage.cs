@@ -12,15 +12,41 @@ namespace KLCodeExtensions
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [Guid(PackageGuids.guidKLCodeExtensionsPackageString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [ProvideToolWindow(typeof(CodeLayoutToolWindow), MultiInstances = false, Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Left, Window = EnvDTE.Constants.vsWindowKindSolutionExplorer)]
+   /* [ProvideToolWindow(typeof(CodeLayoutToolWindow), MultiInstances = false, Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Left, Window = EnvDTE.Constants.vsWindowKindSolutionExplorer)]*/
+    [ProvideToolWindow(typeof(WinformsToolWindow), MultiInstances = false, Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Left, Window = EnvDTE.Constants.vsWindowKindSolutionExplorer)]
     public sealed class KLCodeExtensionsPackage : AsyncPackage
     {
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-            await CodeLayoutToolWindowCommand.InitializeAsync(this);
+            //await CodeLayoutToolWindowCommand.InitializeAsync(this);
+            await WinformsToolWindowCommand.InitializeAsync(this);
         }
 
+        public override IVsAsyncToolWindowFactory GetAsyncToolWindowFactory(Guid toolWindowType)
+        {
+            return toolWindowType.Equals(Guid.Parse(WinformsToolWindow.ToolWindowId)) ? this : null;
+        }
+
+        protected override string GetToolWindowTitle(Type toolWindowType, int id)
+        {
+            return toolWindowType == typeof(WinformsToolWindow) ? WinformsToolWindow.Title : base.GetToolWindowTitle(toolWindowType, id);
+        }
+
+        protected override async Task<object> InitializeToolWindowAsync(Type toolWindowType, int id, CancellationToken cancellationToken)
+        {
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            var dte = await this.GetServiceAsync(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
+            return new WinformsToolWindowData { Dte = dte };
+        }
+
+    }
+}
+
+
+
+
+/*
         public override IVsAsyncToolWindowFactory GetAsyncToolWindowFactory(Guid toolWindowType)
         {
             return toolWindowType.Equals(Guid.Parse(CodeLayoutToolWindow.ToolWindowId)) ? this : null;
@@ -36,5 +62,4 @@ namespace KLCodeExtensions
                 Dte = dte
             };
         }
-    }
-}
+*/

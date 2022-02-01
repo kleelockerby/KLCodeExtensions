@@ -9,21 +9,21 @@ using Task = System.Threading.Tasks.Task;
 
 namespace KLCodeExtensions
 {
-    internal sealed class CodeLayoutToolWindowCommand
+    internal sealed class WinformsToolWindowCommand
     {
         private readonly AsyncPackage package;
 
-        private CodeLayoutToolWindowCommand(AsyncPackage package, OleMenuCommandService commandService)
+        private WinformsToolWindowCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
-            var menuCommandID = new CommandID(PackageGuids.guidKLCodeExtensionsPackageCmdSet, 122);
+            var menuCommandID = new CommandID(PackageGuids.guidKLCodeExtensionsPackageCmdSet, PackageIds.WinformsLayoutCommandId);
             var menuItem = new MenuCommand(this.Execute, menuCommandID);
             commandService.AddCommand(menuItem);
         }
 
-        public static CodeLayoutToolWindowCommand Instance
+        public static WinformsToolWindowCommand Instance
         {
             get;
             private set;
@@ -31,10 +31,7 @@ namespace KLCodeExtensions
 
         private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider
         {
-            get
-            {
-                return this.package;
-            }
+            get  { return this.package; }
         }
 
         public static async Task InitializeAsync(AsyncPackage package)
@@ -42,19 +39,30 @@ namespace KLCodeExtensions
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
-            Instance = new CodeLayoutToolWindowCommand(package, commandService);
+            Instance = new WinformsToolWindowCommand(package, commandService);
         }
 
         private void Execute(object sender, EventArgs e)
         {
-            this.package.JoinableTaskFactory.RunAsync(async delegate
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            package.JoinableTaskFactory.RunAsync(async () =>
             {
-                ToolWindowPane window = await this.package.ShowToolWindowAsync(typeof(CodeLayoutToolWindow), 0, true, this.package.DisposalToken);
-                if ((null == window) || (null == window.Frame))
-                {
-                    throw new NotSupportedException("Cannot create tool window");
-                }
+                ToolWindowPane window = await package.ShowToolWindowAsync(
+                    typeof(WinformsToolWindow),
+                    0,
+                    create: true,
+                    cancellationToken: package.DisposalToken);
             });
+
+            //ToolWindowPane window = this.package.FindToolWindow(typeof(WinformsToolWindow), 0, true);
+            //if ((null == window) || (null == window.Frame))
+            //{
+            //    throw new NotSupportedException("Cannot create tool window");
+            //}
+
+            //IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
+            //Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
         }
     }
 }

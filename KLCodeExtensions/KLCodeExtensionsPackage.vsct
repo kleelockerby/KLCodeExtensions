@@ -21,12 +21,21 @@
     </Groups>
 
     <Buttons>
-      <Button guid="guidKLCodeExtensionsPackageCmdSet" id="CodeLayoutCommandId" priority="0x00100" type="Button">
+      <!--<Button guid="guidKLCodeExtensionsPackageCmdSet" id="CodeLayoutCommandId" priority="0x00100" type="Button">
         <Parent guid="guidKLCodeExtensionsPackageCmdSet" id="KLCodeExtensionsMenuGroup"/>
         <Icon guid="guidImages" id="bmpPic2" />
         <Strings>
           <CommandName>CodeLayout</CommandName>
           <ButtonText>Code Layout</ButtonText>
+        </Strings>
+      </Button>-->
+
+      <Button guid="guidKLCodeExtensionsPackageCmdSet" id="WinformsLayoutCommandId" priority="0x00101" type="Button">
+        <Parent guid="guidKLCodeExtensionsPackageCmdSet" id="KLCodeExtensionsMenuGroup"/>
+        <Icon guid="guidImages" id="bmpPic3" />
+        <Strings>
+          <CommandName>WinformsLayout</CommandName>
+          <ButtonText>Winforms Layout</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -44,7 +53,8 @@
     <GuidSymbol name="guidKLCodeExtensionsPackageCmdSet" value="{90df073e-728f-45f2-9029-8ae359da79f8}">
       <IDSymbol name="KLCodeExtensionsMenuGroup" value="0x1020" />
       <IDSymbol name="KLCodeExtensionsMenu" value="0x1021" />
-      <IDSymbol name="CodeLayoutCommandId" value="0x0100" />
+      <!--<IDSymbol name="CodeLayoutCommandId" value="0x0100" />-->
+      <IDSymbol name="WinformsLayoutCommandId" value="0x0101" />
     </GuidSymbol>
 
     <GuidSymbol name="guidImages" value="{6801951d-df2e-4d54-aa09-7d190c9097ee}" >

@@ -28,7 +28,7 @@ namespace KLCodeExtensions
     {
         public const int KLCodeExtensionsMenuGroup = 0x1020;
         public const int KLCodeExtensionsMenu = 0x1021;
-        public const int CodeLayoutCommandId = 0x0100;
+        public const int WinformsLayoutCommandId = 0x0101;
         public const int bmpPic1 = 0x0001;
         public const int bmpPic2 = 0x0002;
         public const int bmpPic3 = 0x0003;
